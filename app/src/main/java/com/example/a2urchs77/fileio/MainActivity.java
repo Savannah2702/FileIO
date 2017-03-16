@@ -2,6 +2,7 @@ package com.example.a2urchs77.fileio;
 
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -33,12 +34,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         String dir_path = Environment.getExternalStorageDirectory().getAbsolutePath();
         EditText et = (EditText) findViewById(R.id.editText);
-        if (item.getItemId() == R.id.save)
-        {
+        if (item.getItemId() == R.id.save) {
 
             try {
                 FileWriter fw = new FileWriter(dir_path + "/notes.txt");
@@ -50,22 +49,29 @@ public class MainActivity extends AppCompatActivity {
                 pw.close();
 
                 return true;
+            } catch (IOException e) {
+                System.out.println("ERROR!" + e.getMessage());
+                return true;
             }
-            catch(IOException e)
+        } else if (item.getItemId() == R.id.load) {
+            try {
+
+                FileReader fr = new FileReader(dir_path + "/notes.txt");
+                BufferedReader br = new BufferedReader(fr);
+                et.setText(br.readLine());
+                br.close();
+
+
+
+            }
+            catch (IOException e)
             {
                 System.out.println("ERROR!" + e.getMessage());
 
             }
+
+            return true;
         }
-
-        else if (item.getItemId() == R.id.load)
-        {
-
-            return false;
-
-        }
-
         return false;
     }
-
 }
